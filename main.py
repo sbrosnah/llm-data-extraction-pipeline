@@ -41,8 +41,6 @@ amidst all of life’s chaos, there’s still beauty in the beginning of each ne
 """
 
 if __name__ == '__main__':
-    
-    #TODO: Find out how to use prompt caching
 
     config = ExtractorConfig(llm=OpenAI(), 
                             strategy=Strategy(),
@@ -61,16 +59,3 @@ if __name__ == '__main__':
                                 input_data=[])
 
     print(result)
-
-
-    #Now that we have an entity set, we need to update it according to our update guidelines. 
-
-    #Now, with the final entity set, we look for the relationships in the text 
-
-    #Refine the relationships
-
-    #Extract the attributes for each entity
-
-    #Refine the attributes
-
-    #Extract the reference text that captures all the information
