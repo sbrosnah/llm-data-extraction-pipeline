@@ -1,0 +1,45 @@
+#Should be 1 because this is the only config schema supported by the standard logging module in Python
+version: 1
+#We set this to false to avoid disabling custom logging in other modules
+disable_existing_loggers: False
+
+#This is the format of every log message
+#name - name of the logger (usually module name)
+#Can define multiple formatters and refer to them by name in the handlers
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+#Responsible for dispatching log messages to various outputs (console, files, etc.)
+handlers:
+#Configurations for handler class to send logs. Can name these whatever you want
+  console:
+  # handler class to send logs to the console
+    class: logging.StreamHandler
+    level: DEBUG
+    #This is the format name referred to earlier
+    formatter: standard
+    #stdout is the console, but you could send to stderrer, etc
+    stream: ext://sys.stdout
+
+  entity_extraction_file:
+    class: logging.FileHandler
+    level: INFO
+    formatter: standard
+    filename: "entity_extraction/logs/entity-extraction.log"
+    mode: "a"
+
+#help define logging behavior for specific modules. The loggers send logs to various handlers but are filtered by the level still
+#These can be named anything
+loggers:
+  entity_extraction:
+    level: DEBUG
+    handlers: [console, entity_extraction_file]
+    #Propogation allows logger messages to be sent to parent loggers or root logger if needed. "no" prevents this from happening
+    propagate: no
+
+#Top level logger in the heirarchy
+#If no custom logger is specified in a script, or a loggers name doesn't match a configured logger, messages fall to root logger
+root:
+  level: WARNING
+  handlers: [console]
