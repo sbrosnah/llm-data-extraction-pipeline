@@ -1,116 +1,45 @@
-# Project Name
+# LLM Data Extraction Pipeline
 
-One to two paragraphs explaining what your project does and why it exists. Keep it clear, concise, and engaging. Include badges here if applicable (build status, test coverage, etc.).
+This is a modular and flexible framework for LLM-powered data extaction from text. This project makes it easy to create and combine stages. This is by no means an 'out of the box' solution as that would surrender a lot of the flexibility. Instead, the groundwork is laid for you to quickly create and iterate on LLM-powered stages of your extraction pipeline.
+
+The flexibility of this framework comes from the fact that the core features have been extracted out and the extraction module depends on a strategy object (lookup the strategy pattern or see the entity extraction example in the code if you are unfamiliar with the how the strategy pattern works. You should understand it to be able to use this project effectively). It is your job to implement the functions in the strategy object for each stage of the pipeline. 
 
 ## Features
 
-- **Key Feature 1**: Brief description of what it does
-- **Key Feature 2**: Brief description of what it does
-- **Key Feature 3**: Brief description of what it does
+- **Logging**: LLM and User Message Logging
+- **Retry logic**: Retry logic for invalid outputs from the LLM
+- **Output parsing**: Can parse out LLM thinking and JSON outputs.
+- **Chunk iteration and gleaning**: Iterative data extraction of chunks where the number of gleanings on each chunk is configurable.
+- **Reusability**: The design patterns implemented in this project make the code extremely reusable. 
 
 ## Installation
 
-Provide step-by-step instructions on how to install your project.
-
-```bash
-# Example installation commands
-git clone https://github.com/username/project.git
-cd project
-npm install  # or pip install, etc.
-```
+Just ensure your system has the OpenAI library installed for the example code. However, this project doesn't require you to install the OpenAI library. You just need to install whichever model projeder library you are using 
+for the LLM set in the extraction configs of the pipeline stages. This will make more sense later. 
 
 ## Quick Start
 
-Show the simplest possible way to use your project. This should be a minimal example that helps users get started quickly.
+See main.py for an example of how to use this project. There, you will see an example of how to implement a stage of a pipeline that is intended for entity extraction. 
 
-```python
-# Example code
-from project import MainClass
+There, you will find a model.py file that contains models used specifically for the strategy in this stage. You will also find a strategy_functions.py file that contains the functions used in teh construction of the 'ExtractionStrategy' implementation. These are kept in a separate file so that you can try different functions without losing your work. These functions can then be imported into the model.py file where the Strategy object is created. 
 
-obj = MainClass()
-obj.do_something()
-```
+In the prompts.py file, you will find prompts that are used in the strategy_functions.py file to construct user messages. In the entity extraction prompts you will see that there is a list of guidelines with examples so that I can dynamically choose which guidelines I would like to use in the prompt without having to explicitly change the prompt. 
 
-## Usage
+The examples directory contains the examples in a structured format. 
 
-Provide more detailed examples of how to use your project. Include common use cases and code snippets.
-
-### Example 1: Basic Usage
-```python
-# More detailed code example
-```
-
-### Example 2: Advanced Features
-```python
-# More detailed code example
-```
 
 ## Configuration
 
-Explain any configuration options and how to use them. Include example configuration files if applicable.
+Set up the logging configuration in the config/logging.yaml file for each stage of your extraction pipeline. There you will see an example of the configuration for the entity extraction log used in the example. 
 
-```yaml
-# Example configuration
-key1: value1
-key2: value2
-```
-
-## API Reference
-
-If your project has an API, provide clear documentation for each public method/function.
-
-### `method_name(param1, param2)`
-- **Parameters:**
-  - `param1` (type): Description of param1
-  - `param2` (type): Description of param2
-- **Returns:** Description of return value
-- **Example:**
-  ```python
-  result = method_name("foo", "bar")
-  ```
-
-## Contributing
-
-Explain how others can contribute to your project. Include:
-
-1. How to submit issues
-2. How to create pull requests
-3. Coding standards
-4. Development setup
-
-## Testing
-
-Explain how to run tests and provide examples.
-
-```bash
-# Example test commands
-npm test
-pytest tests/
-```
-
-## Deployment
-
-If applicable, provide instructions for deploying the project to production.
-
-## Built With
-
-- List major frameworks/libraries used
-- Include versions if relevant
-
-## License
-
-State the license and include any relevant links.
-
-## Acknowledgments
-
-- Credit collaborators
-- Link to inspiration sources
-- Link to related projects
+For each stage in your pipeline, you will want to create a directory with the subdirectories 'logs', 'prompts', 'examples', and 'results'. You can then 
 
 ## Project Status
 
-Indicate if the project is in active development, maintenance mode, or no longer maintained.
+This project is mainly for personal use to make development of a data extraction pipeline I'm working on a lot easier. There is still a lot of work I am planning on doing in this project.
 
----
+I plan to:
+- Improve documentation
+- Implement a reusable testing framework that users can customize (specific to data extraction) using a dataset and LLM as a judge. 
+- Integrate with a database so not everything is getting stored in json files.
 
-**Note:** Keep your README up to date. As your project evolves, make sure the documentation reflects the current state.
